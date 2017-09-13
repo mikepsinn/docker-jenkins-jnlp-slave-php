@@ -10,18 +10,14 @@ ENV COMPOSER_VERSION=1.4.2 \
     PHPBREW_ROOT=/home/jenkins/.phpbrew \
     PHPBREW_HOME=/home/jenkins/.phpbrew \
     PHPBREW_SET_PROMPT=1 \
-    PHPBREW_PHP=php-7.1.7 \
-    DEV_PASS=root \
-    MYSQL_USER=root \
-    DATABASE_HOST=localhost \
-    DATABASE_NAME=quantimodo
+    PHPBREW_PHP=php-7.1.7
 
 RUN printf "\n\n==== Install utility tools and libraries ====\n" \
  && apt-get update \
  && apt-get install -y apt-utils automake gcc g++ make lcov libbz2-dev libcurl4-openssl-dev libedit-dev libedit2 \
                        libgmp-dev libgmp3-dev libjpeg-dev libicu-dev libmcrypt-dev libpng12-dev libreadline-dev \
                        libsasl2-dev libssl-dev libtidy-dev libxml2 libxml2-dev libxml2-utils libxslt1-dev mediainfo \
-                       openssl pkg-config systemtap-sdt-dev postgresql-server-dev-all mysql-client mysql-server \
+                       openssl pkg-config systemtap-sdt-dev postgresql-server-dev-all \
 
  && printf "\n\n==== Install PHP (required to install phpbrew after ====\n" \
  && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list \
@@ -61,22 +57,7 @@ RUN printf "\n\n==== Install utility tools and libraries ====\n" \
  && npm install -g grunt-cli \
  
  && printf "\n\n==== Install MySQL ====\n" \
- && echo "Setting MySQL root password to ${DEV_PASS} " \
- && debconf-set-selections <<< "mysql-server mysql-server/root_password password ${DEV_PASS}" \
- && debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${DEV_PASS}" \
- && apt-get install -y mysql-client mysql-server >/dev/null \
- && rm /etc/apparmor.d/usr.sbin.mysqld \
- && service apparmor restart \
- && echo "Create a user "${MYSQL_USER}"" \
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "CREATE USER ${MYSQL_USER}@${DATABASE_HOST} IDENTIFIED BY '${DEV_PASS}';" \
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO ${MYSQL_USER}@${DATABASE_HOST} IDENTIFIED BY '${DEV_PASS}';" \
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "CREATE USER ${MYSQL_USER}@'%' IDENTIFIED BY '${DEV_PASS}';" \
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO ${MYSQL_USER}@'%' IDENTIFIED BY '${DEV_PASS}';" \
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "FLUSH PRIVILEGES;" \
- && echo "Updating mysql configs in /etc/mysql/my.cnf." \
- && sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf \
- && echo "Updated mysql bind address in /etc/mysql/my.cnf to 0.0.0.0 to allow external connections." \
- && service mysql restart
+ && apt-get install -y mysql-client mysql-server >/dev/null
 
 USER jenkins
 
