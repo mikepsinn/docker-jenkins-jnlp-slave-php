@@ -13,7 +13,6 @@ ENV COMPOSER_VERSION=1.4.2 \
     PHPBREW_PHP=php-7.1.7 \
     DEV_PASS=root \
     MYSQL_USER=root \
-    APP_HOST_NAME=http://local.quantimo.do \
     DATABASE_HOST=localhost \
     DATABASE_NAME=quantimodo
 
