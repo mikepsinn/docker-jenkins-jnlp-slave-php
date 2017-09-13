@@ -59,24 +59,24 @@ RUN printf "\n\n==== Install utility tools and libraries ====\n" \
  && apt-get update && apt-get install -y yarn \
 
  && printf "\n\n==== Install Grunt ====\n" \
- && npm install -g grunt-cli
+ && npm install -g grunt-cli \
  
  && printf "\n\n==== Install MySQL ====\n" \
- && echo "Setting MySQL root password to ${DEV_PASS} "
- && debconf-set-selections <<< "mysql-server mysql-server/root_password password ${DEV_PASS}"
- && debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${DEV_PASS}"
- && apt-get install -y mysql-client mysql-server >/dev/null
- && rm /etc/apparmor.d/usr.sbin.mysqld
- && service apparmor restart
- && echo "Create a user "${MYSQL_USER}""
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "CREATE USER ${MYSQL_USER}@${DATABASE_HOST} IDENTIFIED BY '${DEV_PASS}';"
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO ${MYSQL_USER}@${DATABASE_HOST} IDENTIFIED BY '${DEV_PASS}';"
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "CREATE USER ${MYSQL_USER}@'%' IDENTIFIED BY '${DEV_PASS}';"
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO ${MYSQL_USER}@'%' IDENTIFIED BY '${DEV_PASS}';"
- && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "FLUSH PRIVILEGES;"
- && echo "Updating mysql configs in /etc/mysql/my.cnf."
- && sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
- && echo "Updated mysql bind address in /etc/mysql/my.cnf to 0.0.0.0 to allow external connections."
+ && echo "Setting MySQL root password to ${DEV_PASS} " \
+ && debconf-set-selections <<< "mysql-server mysql-server/root_password password ${DEV_PASS}" \
+ && debconf-set-selections <<< "mysql-server mysql-server/root_password_again password ${DEV_PASS}" \
+ && apt-get install -y mysql-client mysql-server >/dev/null \
+ && rm /etc/apparmor.d/usr.sbin.mysqld \
+ && service apparmor restart \
+ && echo "Create a user "${MYSQL_USER}"" \
+ && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "CREATE USER ${MYSQL_USER}@${DATABASE_HOST} IDENTIFIED BY '${DEV_PASS}';" \
+ && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO ${MYSQL_USER}@${DATABASE_HOST} IDENTIFIED BY '${DEV_PASS}';" \
+ && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "CREATE USER ${MYSQL_USER}@'%' IDENTIFIED BY '${DEV_PASS}';" \
+ && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "GRANT ALL PRIVILEGES ON *.* TO ${MYSQL_USER}@'%' IDENTIFIED BY '${DEV_PASS}';" \
+ && sudo mysql --host=${DATABASE_HOST} --port 3306 -u root --password=${DEV_PASS} -e "FLUSH PRIVILEGES;" \
+ && echo "Updating mysql configs in /etc/mysql/my.cnf." \
+ && sed -i "s/bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf \
+ && echo "Updated mysql bind address in /etc/mysql/my.cnf to 0.0.0.0 to allow external connections." \
  && service mysql restart
 
 USER jenkins
