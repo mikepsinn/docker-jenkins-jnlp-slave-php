@@ -23,6 +23,7 @@ The following tools can be called under the Jenkins slave.
 * `composer` (based on [prestissimo](https://github.com/hirak/prestissimo "prestissimo") ;
 * `phpmd` ;
 * `sami` ;
+* `mysql` ;
 * `phpcov` ;
 * `phpcpd` ;
 * `phploc` ;
