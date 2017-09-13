@@ -7,4 +7,4 @@ NAME=jenkins-jnlp-slave-php
 VERSION=$1
 
 # Build the Docker image
-docker build --no-cache -t gomoob/$NAME:$VERSION ./$VERSION
+docker build --no-cache -t gomoob/$NAME:$VERSION .
