@@ -25,7 +25,7 @@ RUN printf "\n\n==== Install utility tools and libraries ====\n" \
  && apt update \
  && apt install -y php7.0 php7.0-dev php7.0-fpm php7.0-mysql php7.0-curl php7.0-json php7.0-gd php7.0-mcrypt \
                    php7.0-msgpack php7.0-memcached php7.0-intl php7.0-sqlite3 php7.0-gmp php7.0-geoip php7.0-mbstring \
-                   php7.0-xml php7.0-zip \
+                   php7.0-xml php7.0-zip mysql-client mysql-server \
 
  && printf "\n\n==== Install PHP tools ====\n" \
  && mkdir -p /usr/bin \
@@ -54,10 +54,7 @@ RUN printf "\n\n==== Install utility tools and libraries ====\n" \
  && apt-get update && apt-get install -y yarn \
 
  && printf "\n\n==== Install Grunt ====\n" \
- && npm install -g grunt-cli \
- 
- && printf "\n\n==== Install MySQL ====\n" \
- && apt-get install -y mysql-client mysql-server >/dev/null
+ && npm install -g grunt-cli
 
 USER jenkins
 
